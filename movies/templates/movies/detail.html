@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1 id="genres" data-genres="{{ movie.genres }}">{{ movie.title }}</h1>
+  <p>{{ movie.overview }}</p>
+  <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" alt="poster img">
+
+  <a href="{% url 'community:create' movie.movie_id %}"><h3>[리뷰 작성하러 가기]</h3></a>
+  <hr>
+  {% comment %} 장르 추천기능 {% endcomment %}
+  <h3>Recommendations by Genres</h3>
+  <div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const genres = document.querySelector('#genres')
+    const genre_str = genres.dataset.genres
+    let genresId = genre_str.replace('[', '')
+    genresId = genresId.replace(']', '')
+    genresId = genresId.replaceAll(' ', '')
+
+    // 장르 추천기능 
+    const myUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${genresId}&api_key=fae9dc8695dc36b190fa7f4146fc979f`
+    axios.get(myUrl)
+    .then((response) => {
+      const recommendArray = response.data.results
+      const container = document.querySelector('div')
+      recommendArray.forEach((movie) => {
+        const recommendMovie = document.createElement('p')
+        recommendMovie.innerText = movie.title
+        container.appendChild(recommendMovie)
+      })
+    })
+  </script>
+{% endblock %}
