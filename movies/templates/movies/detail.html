@@ -1,15 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1 id="genres" data-genres="{{ movie.genres }}">{{ movie.title }}</h1>
-  <p>{{ movie.overview }}</p>
-  <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" alt="poster img">
-
-  <a href="{% url 'community:create' movie.movie_id %}"><h3>[리뷰 작성하러 가기]</h3></a>
-  <hr>
+  <h3>Movie Info</h3>
+  <br>
+  <div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" class="w-100" alt="poster img">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 id="genres" data-genres="{{ movie.genres }}" class="card-title">{{ movie.title }}</h5>
+        <p class="card-text">{{ movie.overview }}</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <a href="{% url 'community:create' movie.movie_id %}"><button class="btn btn-outline-secondary">[리뷰 작성하러 가기]</button></a>
+      </div>
+    </div>
+  </div>
+  </div>
+  
   {% comment %} 장르 추천기능 {% endcomment %}
   <h3>Recommendations by Genres</h3>
-  <div></div>
+  <div id="recGenre"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
@@ -24,7 +36,7 @@
     axios.get(myUrl)
     .then((response) => {
       const recommendArray = response.data.results
-      const container = document.querySelector('div')
+      const container = document.querySelector('#recGenre')
       recommendArray.forEach((movie) => {
         const recommendMovie = document.createElement('p')
         recommendMovie.innerText = movie.title

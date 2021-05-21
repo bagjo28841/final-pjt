@@ -5,11 +5,18 @@
   <h3>{{ review.pk }} 번째 글</h3>
   <hr>
   <p>제목: {{ review.title }}</p>
-  <p id="movieId" data-movie-id="{{ review.movie_id }}">영화 제목: <a id="movieTitle" href="{% url 'movies:detail' review.movie_id %}"></a></p>
+  <p>영화 제목: <a href="{% url 'movies:detail' review.movie_id %}">{{ review.movie_title }}</a></p>
   <p>내용: {{ review.content }}</p>
   <p>평점: {{ review.rank }}</p>
   <p>작성 시각: {{ review.created_at }}</p>
   <p>수정 시각: {{ review.updated_at }}</p>
+  {% if request.user == review.user %}
+    <a href="{% url 'community:update' review.pk %}"><button>글 수정</button></a> 
+    <form action="{% url 'community:delete' review.pk %}" method="POST">
+      {% csrf_token %}
+      <button>글 삭제</button>
+    </form>
+  {% endif %}
   <hr>
   <h4>댓글 목록</h4>
   {% if comments|length %}
@@ -17,7 +24,22 @@
   {% endif %}
   {% for comment in comments %}
     <div>
-      {{ comment.user }} - {{ comment.content }}
+      <span>{{ comment.user }} - {{ comment.content }}</span>
+      {% if request.user == comment.user %}
+
+        <form class="comment-form" data-review-id="{{ review.pk }}" data-comment-id="{{ comment.pk }}">
+          <button id="comment-{{ comment.pk }}">댓글 수정</button>
+          <input type="text" id="input-{{ comment.pk }}" style="display: none;" name="text">
+        </form>
+        <form class="updated-form" data-review-id="{{ review.pk }}" data-comment-id="{{ comment.pk }}">
+          <button id="updated-{{ comment.pk }}" style="display: none;">수정 완료</button>
+        </form>
+
+        <form action="{% url 'community:delete_comment' review.pk comment.pk %}" method="POST">
+          {% csrf_token %}
+          <button>댓글 삭제</button>
+        </form>
+      {% endif %}
     </div>
   {% empty %}
     <p><b>댓글이 없어요..</b></p>
@@ -36,15 +58,61 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-  const movieIdQuery = document.querySelector('#movieId')
-  const movieId = movieIdQuery.dataset.movieId
-  const myURL = `https://api.themoviedb.org/3/movie/${movieId}?&api_key=fae9dc8695dc36b190fa7f4146fc979f`
-  axios.get(myURL)
-  .then(res => {
-    const movie = res.data
-    // console.log(res)
-    const movieTitle = document.querySelector('#movieTitle')
-    movieTitle.innerText = movie.title
-  })
+  // 댓글 수정
+  const commentForms = document.querySelectorAll('.comment-form')
+  const updatedForms = document.querySelectorAll('.updated-form')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  commentForms.forEach((form) => {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        const commentId = event.target.dataset.commentId
+        const reviewId = event.target.dataset.reviewId
+
+        axios({
+          method: 'get',
+          url: `http://127.0.0.1:8000/community/${reviewId}/update_comment/${commentId}/`,
+          headers: {'X-CSRFToken': csrftoken},
+        })
+          .then((response) => {
+            // 원래 댓글 내용 수정form으로 불러오기
+            const updateForm = document.querySelector(`#input-${commentId}`)
+            const updateBtn = document.querySelector(`#updated-${commentId}`)
+            updateForm.style = 'display: inline'
+            updateForm.value = response.data.comment_content
+            updateBtn.style = 'display: inline'
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      })
+    })
+  updatedForms.forEach((form) => {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        const commentId = event.target.dataset.commentId
+        const reviewId = event.target.dataset.reviewId
+        const updateForm = document.querySelector(`#input-${commentId}`)
+        // const content = updateForm.name
+        // console.log(content)
+        axios({
+          method: 'post',
+          url: `http://127.0.0.1:8000/community/${reviewId}/update_comment/${commentId}/`,
+          headers: {'X-CSRFToken': csrftoken},
+          data: {
+            text: "text",
+          },
+        })
+          .then((response) => {
+            // 수정사항 DB에 저장
+            updateForm.style = 'display: none'
+            const updateBtn = document.querySelector(`#updated-${commentId}`)
+            updateBtn.style = 'display: none'
+
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      })
+    })
 </script>
 {% endblock  %}

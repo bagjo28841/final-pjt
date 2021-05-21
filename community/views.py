@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from django.http import JsonResponse, HttpResponse
 from .models import Review, Comment
+from movies.models import Movie
 from .forms import ReviewForm, CommentForm
 
 
@@ -14,14 +16,17 @@ def index(request):
     return render(request, 'community/index.html', context)
 
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def create(request, movie_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST) 
+        movie = get_object_or_404(Movie, movie_id=movie_id)
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
             review.movie_id = movie_id
+            review.movie_title = movie.title
             review.save()
             
             # 등업 확인하기
@@ -36,6 +41,38 @@ def create(request, movie_id):
         'form': form,
     }
     return render(request, 'community/create.html', context)
+
+
+@require_POST
+def delete(request, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    if request.user.is_authenticated:
+        if request.user == review.user:
+            review.delete()
+            return redirect('community:index')
+    return redirect('accounts:login')
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def update(request, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    if request.user == review.user:
+        if request.method == 'POST':
+            form = ReviewForm(request.POST, instance=review)
+            if form.is_valid():
+                form.save()
+                return redirect('community:detail', review.pk)
+        else:
+            form = ReviewForm(instance=review)
+    else:
+        return redirect('movies:index')
+        # return HttpResponseForbidden()
+    context = {
+        'form': form,
+        'review': review,
+    }
+    return render(request, 'community/update.html', context)
 
 
 @require_GET
@@ -75,6 +112,35 @@ def create_comment(request, review_pk):
 
 
 @require_POST
+def delete_comment(request, review_pk, comment_pk):
+    if request.user.is_authenticated:
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        if request.user == comment.user:
+            comment.delete()
+        # return HttpResponseForbidden()
+    return redirect('community:detail', review_pk)
+    # return HttpResponse(status=401)
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def update_comment(request, review_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    if request.method == 'POST':
+        if request.user == comment.user:
+            # 새로운 값을 받아오기
+            print(request.POST)
+            # 그걸 form 형식으로 넣어줘서
+            form = CommentForm(request.POST, instance=comment)
+            if form.is_valid():
+                form.save()
+    context = {
+        'comment_content': comment.content
+    }
+    return JsonResponse(context)
+
+
+@require_POST
 def like(request, review_pk):
     if request.user.is_authenticated:
         review = get_object_or_404(Review, pk=review_pk)
@@ -92,4 +158,4 @@ def like(request, review_pk):
             'count': review.like_users.count(),
         }
         return JsonResponse(context)
-    return HttpResponse(status=401)
+    return redirect('accounts:login')

@@ -3,7 +3,7 @@ from .models import Review, Comment
 
 
 class ReviewForm(forms.ModelForm):
-    
+
     class Meta:
         model = Review
         fields = ['title', 'rank', 'content']
