@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Community</h1>
+  <h1>Pro Community</h1>
   <hr>
   <table class="table">
   <thead>
@@ -15,27 +15,27 @@
     </tr>
   </thead>
   <tbody>
-    {% for review in reviews %}
+    {% for proreview in proreviews %}
     <tr>
-      <th scope="row">{{ review.pk }}</th>
-      <td><a href="{% url 'community:detail' review.pk %}">{{ review.title }}</a></td>
-      <td><a href="{% url 'movies:detail' review.movie_id %}">{{ review.movie_title }}</a></td>
-      <td><a href="{% url 'accounts:profile' review.user.username %}">{{ review.user }}</a></td>
+      <th scope="row">{{ proreview.pk }}</th>
+      <td><a href="{% url 'professional:detail' proreview.pk %}">{{ proreview.title }}</a></td>
+      <td><a href="{% url 'movies:detail' proreview.movie_id %}">{{ proreview.movie_title }}</a></td>
+      <td><a href="{% url 'accounts:profile' proreview.user.username %}">{{ proreview.user }}</a></td>
       <td>
-        <form class="d-inline like-form" data-review-id="{{ review.pk }}">
+        <form class="d-inline like-form" data-proreview-id="{{ proreview.pk }}">
           {% csrf_token %}
-          {% if user in review.like_users.all %}
+          {% if user in proreview.like_users.all %}
             <button class="btn btn-link">
-              <i class="fas fa-heart fa-lg" style="color:crimson;" id="like-{{ review.pk }}"></i>
+              <i class="fas fa-heart fa-lg" style="color:crimson;" id="like-{{ proreview.pk }}"></i>
             </button>
           {% else %}
             <button class="btn btn-link">
-              <i class="fas fa-heart fa-lg" style="color:black;" id="like-{{ review.pk }}"></i>
+              <i class="fas fa-heart fa-lg" style="color:black;" id="like-{{ proreview.pk }}"></i>
             </button>
           {% endif %}
         </form>
       </td>
-      <td><p id="like-count-{{ review.pk }}">{{ review.like_users.all|length }}</p></td></td>
+      <td><p id="like-count-{{ proreview.pk }}">{{ proreview.like_users.all|length }}</p></td></td>
     </tr>
     {% endfor %}
   </tbody>
@@ -51,11 +51,11 @@
     forms.forEach((form) => {
       form.addEventListener('submit', function (event) {
         event.preventDefault()
-        const reviewId = event.target.dataset.reviewId
+        const proreviewId = event.target.dataset.proreviewId
 
         axios({
           method: 'post',
-          url: `http://127.0.0.1:8000/community/${reviewId}/like/`,
+          url: `http://127.0.0.1:8000/professional/${proreviewId}/like/`,
           headers: {'X-CSRFToken': csrftoken},
         })
           .then((response) => {
@@ -63,11 +63,11 @@
             const count = response.data.count
             const liked = response.data.liked
 
-            const likeHeart = document.querySelector(`#like-${reviewId}`)
+            const likeHeart = document.querySelector(`#like-${proreviewId}`)
             likeHeart.style = liked ? 'color:crimson;' : 'color:black;'
 
             console.log(count)
-            const likeCount = document.querySelector(`#like-count-${reviewId}`)
+            const likeCount = document.querySelector(`#like-count-${proreviewId}`)
             likeCount.innerText = count
 
           })

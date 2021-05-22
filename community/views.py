@@ -4,16 +4,19 @@ from django.views.decorators.http import require_GET, require_POST, require_http
 from django.http import JsonResponse, HttpResponse
 from .models import Review, Comment
 from movies.models import Movie
+from accounts.models import Stamp
 from .forms import ReviewForm, CommentForm
 
 
 @require_GET
 def index(request):
-    reviews = Review.objects.order_by('-pk')
-    context = {
-        'reviews': reviews,
-    }
-    return render(request, 'community/index.html', context)
+    if request.user.is_authenticated:
+        reviews = Review.objects.order_by('-pk')
+        context = {
+            'reviews': reviews,
+        }
+        return render(request, 'community/index.html', context)
+    return redirect('accounts:login')
 
 
 @login_required
@@ -22,6 +25,7 @@ def create(request, movie_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST) 
         movie = get_object_or_404(Movie, movie_id=movie_id)
+        my_stamp = get_object_or_404(Stamp, user=request.user)
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
@@ -34,7 +38,74 @@ def create(request, movie_id):
                 if len(request.user.review_set.all()) >= 10 and len(request.user.comment_set.all()) >= 10:
                     request.user.user_rank = 2
                     request.user.save()
+                    my_stamp.bonus = True
+                return redirect('community:detail', review.pk)
+
+            # 스탬프 확인하기
+            else:
+                genre_ids = list(map(int, movie.genres[1:-1].split(', ')))
+                for genre in genre_ids:
+                    if genre == 28:
+                        my_stamp.action = True
+                        continue
+                    elif genre == 12:
+                        my_stamp.adventure = True
+                        continue
+                    elif genre == 16:
+                        my_stamp.animation = True
+                        continue
+                    elif genre == 35:
+                        my_stamp.comedy = True
+                        continue
+                    elif genre == 80:
+                        my_stamp.crime = True
+                        continue
+                    elif genre == 99:
+                        my_stamp.documentary = True
+                        continue
+                    elif genre == 18:
+                        my_stamp.drama = True
+                        continue
+                    elif genre == 10751:
+                        my_stamp.family = True
+                        continue
+                    elif genre == 14:
+                        my_stamp.fantasy = True
+                        continue
+                    elif genre == 36:
+                        my_stamp.history = True
+                        continue
+                    elif genre == 27:
+                        my_stamp.horror = True
+                        continue
+                    elif genre == 10402:
+                        my_stamp.music = True
+                        continue
+                    elif genre == 9648:
+                        my_stamp.mystery = True
+                        continue
+                    elif genre == 10749:
+                        my_stamp.romance = True
+                        continue
+                    elif genre == 878:
+                        my_stamp.science_fiction = True
+                        continue
+                    elif genre == 10770:
+                        my_stamp.tv_movie = True
+                        continue
+                    elif genre == 53:
+                        my_stamp.thriller = True
+                        continue
+                    elif genre == 10752:
+                        my_stamp.war = True
+                        continue
+                    elif genre == 37:
+                        my_stamp.western = True
+                        continue
+            my_stamp.save()
+            print(my_stamp)
             return redirect('community:detail', review.pk)
+
     else:
         form = ReviewForm()
     context = {
@@ -77,15 +148,17 @@ def update(request, review_pk):
 
 @require_GET
 def detail(request, review_pk):
-    review = get_object_or_404(Review, pk=review_pk)
-    comments = review.comment_set.all()
-    comment_form = CommentForm()
-    context = {
-        'review': review,
-        'comment_form': comment_form,
-        'comments': comments,
-    }
-    return render(request, 'community/detail.html', context)
+    if request.user.is_authenticated:
+        review = get_object_or_404(Review, pk=review_pk)
+        comments = review.comment_set.all()
+        comment_form = CommentForm()
+        context = {
+            'review': review,
+            'comment_form': comment_form,
+            'comments': comments,
+        }
+        return render(request, 'community/detail.html', context)
+    return redirect('accounts:login')
 
 
 @require_POST

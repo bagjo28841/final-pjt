@@ -1,12 +1,13 @@
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
+from django.conf import settings
 from .models import Movie
 
 
 # Create your views here.
 def movie_update(request):
-    if request.user.is_superuser:
+    if settings.IS_FIRST:
         for i in range(1, 4):
             # data 받아오기
             my_url = f'https://api.themoviedb.org/3/movie/popular?api_key=fae9dc8695dc36b190fa7f4146fc979f&page={i}'
@@ -28,10 +29,13 @@ def movie_update(request):
 
                 # Movie DB에 저장하기, 중복제거
                 (new_movie, created) = Movie.objects.get_or_create(title=title, overview=overview, release_date=release_date, poster_path=poster_path, popularity=popularity, vote_count=vote_count, vote_average=vote_average, genres=genre_ids, movie_id=movie_id)
+                settings.IS_FIRST = False
     return redirect('movies:index')
 
 @require_GET
 def index(request):
+    if settings.IS_FIRST:
+        return redirect('movies:movie_update')
     movies = Movie.objects.all()
     context = {
         'movies': movies,

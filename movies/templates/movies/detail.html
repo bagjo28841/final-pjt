@@ -3,17 +3,22 @@
 {% block content %}
   <h3>Movie Info</h3>
   <br>
-  <div class="card mb-3" style="max-width: 540px;">
+  <div class="card mb-3">
   <div class="row g-0">
     <div class="col-md-4">
       <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" class="w-100" alt="poster img">
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <h5 id="genres" data-genres="{{ movie.genres }}" class="card-title">{{ movie.title }}</h5>
+        <h4 id="genres" data-genres="{{ movie.genres }}" class="card-title">{{ movie.title }}</h4>
+        <p class="card-text">Release Date : {{ movie.release_date}}</p>
         <p class="card-text">{{ movie.overview }}</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <p class="card-text">Popularity : {{ movie.popularity }}</p>
+        <p class="card-text">Vote Average : {{ movie.vote_average }}</p>
         <a href="{% url 'community:create' movie.movie_id %}"><button class="btn btn-outline-secondary">[리뷰 작성하러 가기]</button></a>
+        {% if user.user_rank == 4 %}
+          <a href="{% url 'professional:create' movie.movie_id %}"><button class="btn btn-outline-secondary">[Pro 리뷰 작성하러 가기]</button></a>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -21,7 +26,9 @@
   
   {% comment %} 장르 추천기능 {% endcomment %}
   <h3>Recommendations by Genres</h3>
-  <div id="recGenre"></div>
+  <div id="recGenre" class="row row-cols-2 row-cols-md-6 row-cols-lg-8 g-4">
+  </div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
@@ -37,10 +44,29 @@
     .then((response) => {
       const recommendArray = response.data.results
       const container = document.querySelector('#recGenre')
+      console.log(container)
       recommendArray.forEach((movie) => {
-        const recommendMovie = document.createElement('p')
-        recommendMovie.innerText = movie.title
-        container.appendChild(recommendMovie)
+        const colDiv = document.createElement('div')
+        colDiv.setAttribute('class', 'col')
+        container.appendChild(colDiv)
+
+        const cardDiv = document.createElement('div')
+        cardDiv.setAttribute('class', 'card')
+        colDiv.appendChild(cardDiv)
+
+        const imgSrc = document.createElement('img')
+        imgSrc.setAttribute('class', 'card-img-top')
+        imgSrc.setAttribute('src', `https://image.tmdb.org/t/p/w500/${movie.poster_path}`)
+        cardDiv.appendChild(imgSrc)
+
+        const cardBody = document.createElement('div')
+        cardBody.setAttribute('class', 'card-body')
+        cardDiv.appendChild(cardBody)
+
+        const recMovieTitle = document.createElement('h5')
+        recMovieTitle.setAttribute('class', 'card-title')
+        recMovieTitle.innerText = movie.title
+        cardBody.appendChild(recMovieTitle)
       })
     })
   </script>

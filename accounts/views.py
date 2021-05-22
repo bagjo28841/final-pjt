@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
 from django.http import HttpResponse, JsonResponse
+from .models import Stamp
 from .forms import CustomUserCreationForm
 
 
@@ -19,6 +20,8 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
+            # 스탬프 생성
+            Stamp.objects.create(user=request.user)
             return redirect('community:index')
     else:
         form = CustomUserCreationForm()
@@ -49,14 +52,16 @@ def login(request):
 @require_POST
 def logout(request):
     auth_logout(request)
-    return redirect('community:index')
+    return redirect('movies:index')
 
 
 @login_required
 def profile(request, username):
     person = get_object_or_404(get_user_model(), username=username)
+    stamp = get_object_or_404(Stamp, user=request.user)
     context = {
         'person': person,
+        'stamp': stamp,
     }
     return render(request, 'accounts/profile.html', context)
 

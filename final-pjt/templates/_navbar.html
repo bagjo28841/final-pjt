@@ -1,0 +1,59 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'movies:index' %}"><img src="{% static 'joy_image.jpg' %}" style="height: 50px;" alt="brand img"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="topnav d-flex">
+        <div class="nav navbar-nav me-auto">
+          <a class="nav-link active" aria-current="page" href="{% url 'movies:index' %}">Home</a>
+          {% if request.user.is_authenticated %}
+          <a class="nav-link" href="{% url 'community:index' %}">Community</a>
+          {% if request.user.user_rank < 3 %}
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#proModal">
+              Pro-Community
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="proModal" tabindex="-1" aria-labelledby="proModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="proModalLabel">등급제한</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    3등급 이상만 이용 가능한 게시판입니다!
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="{% url 'accounts:profile' user.username %}"><button type="button" class="btn btn-warning">스탬프 확인하러 가기</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <a class="nav-link" href="{% url 'professional:index' %}">Pro-Community</a>
+          {% endif %}
+          <form action="{% url 'accounts:logout' %}" method="POST">
+            {% csrf_token %}
+            <button class="nav-link btn btn-link">Logout</button>
+          </form>
+          {% else %}
+            <a class="nav-link" href="{% url 'accounts:signup' %}">Signup</a>
+            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+          {% endif %}
+        </div>
+        <div class="nav navbar-nav">
+          {% if request.user.is_authenticated %}
+            <a class="nav-link" href="{% url 'accounts:profile' request.user.username %}">Hello, {{ request.user.username }}</a>
+            <a class="nav-link">회원 등급: {{ user.user_rank }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

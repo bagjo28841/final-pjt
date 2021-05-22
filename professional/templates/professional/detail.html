@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2 class="text-center">Pro DETAIL</h2>
+  <h3>{{ proreview.pk }} 번째 글</h3>
+  <hr>
+  <p>제목: {{ proreview.title }}</p>
+  <p>영화 제목: <a href="{% url 'movies:detail' proreview.movie_id %}">{{ proreview.movie_title }}</a></p>
+  <p>내용: {{ proreview.content }}</p>
+  <p>평점: {{ proreview.rank }}</p>
+  <p>작성 시각: {{ proreview.created_at }}</p>
+  <p>수정 시각: {{ proreview.updated_at }}</p>
+  {% if request.user == proreview.user %}
+    <a href="{% url 'professional:update' proreview.pk %}"><button>글 수정</button></a> 
+    <form action="{% url 'professional:delete' proreview.pk %}" method="POST">
+      {% csrf_token %}
+      <button>글 삭제</button>
+    </form>
+  {% endif %}
+  <hr>
+  <a href="{% url 'professional:index' %}">[back]</a>
+{% endblock  %}
