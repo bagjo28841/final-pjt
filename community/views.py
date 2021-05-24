@@ -25,7 +25,7 @@ def create(request, movie_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST) 
         movie = get_object_or_404(Movie, movie_id=movie_id)
-        my_stamp = get_object_or_404(Stamp, user=request.user)
+        stamp = get_object_or_404(Stamp, user=request.user)
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
@@ -38,72 +38,104 @@ def create(request, movie_id):
                 if len(request.user.review_set.all()) >= 10 and len(request.user.comment_set.all()) >= 10:
                     request.user.user_rank = 2
                     request.user.save()
-                    my_stamp.bonus = True
+                    stamp.bonus = True
+                    stamp.counter += 1
+                    stamp.save()
                 return redirect('community:detail', review.pk)
-
-            # 스탬프 확인하기
             else:
+                if len(request.user.review_set.all()) >= 30:
+                    stamp.review_stamp = True
+                    stamp.counter += 1
+
+                # 장르 스탬프 확인하기
                 genre_ids = list(map(int, movie.genres[1:-1].split(', ')))
                 for genre in genre_ids:
                     if genre == 28:
-                        my_stamp.action = True
+                        stamp.action = True
+                        stamp.counter += 1
                         continue
                     elif genre == 12:
-                        my_stamp.adventure = True
+                        stamp.adventure = True
+                        stamp.counter += 1
                         continue
                     elif genre == 16:
-                        my_stamp.animation = True
+                        stamp.animation = True
+                        stamp.counter += 1
                         continue
                     elif genre == 35:
-                        my_stamp.comedy = True
+                        stamp.comedy = True
+                        stamp.counter += 1
                         continue
                     elif genre == 80:
-                        my_stamp.crime = True
+                        stamp.crime = True
+                        stamp.counter += 1
                         continue
                     elif genre == 99:
-                        my_stamp.documentary = True
+                        stamp.documentary = True
+                        stamp.counter += 1
                         continue
                     elif genre == 18:
-                        my_stamp.drama = True
+                        stamp.drama = True
+                        stamp.counter += 1
                         continue
                     elif genre == 10751:
-                        my_stamp.family = True
+                        stamp.family = True
+                        stamp.counter += 1
                         continue
                     elif genre == 14:
-                        my_stamp.fantasy = True
+                        stamp.fantasy = True
+                        stamp.counter += 1
                         continue
                     elif genre == 36:
-                        my_stamp.history = True
+                        stamp.history = True
+                        stamp.counter += 1
                         continue
                     elif genre == 27:
-                        my_stamp.horror = True
+                        stamp.horror = True
+                        stamp.counter += 1
                         continue
                     elif genre == 10402:
-                        my_stamp.music = True
+                        stamp.music = True
+                        stamp.counter += 1
                         continue
                     elif genre == 9648:
-                        my_stamp.mystery = True
+                        stamp.mystery = True
+                        stamp.counter += 1
                         continue
                     elif genre == 10749:
-                        my_stamp.romance = True
+                        stamp.romance = True
+                        stamp.counter += 1
                         continue
                     elif genre == 878:
-                        my_stamp.science_fiction = True
+                        stamp.science_fiction = True
+                        stamp.counter += 1
                         continue
                     elif genre == 10770:
-                        my_stamp.tv_movie = True
+                        stamp.tv_movie = True
+                        stamp.counter += 1
                         continue
                     elif genre == 53:
-                        my_stamp.thriller = True
+                        stamp.thriller = True
+                        stamp.counter += 1
                         continue
                     elif genre == 10752:
-                        my_stamp.war = True
+                        stamp.war = True
+                        stamp.counter += 1
                         continue
                     elif genre == 37:
-                        my_stamp.western = True
+                        stamp.western = True
+                        stamp.counter += 1
                         continue
-            my_stamp.save()
-            print(my_stamp)
+                stamp.save()
+            
+            # 3단계 등업 조건 확인
+            if stamp.counter >= 15 and request.user.user_rank == 2:
+                request.user.user_rank = 3
+                request.user.save()
+            elif stamp.counter == 24:
+                stamp.all_stamp = True
+                stamp.counter += 1
+                stamp.save()
             return redirect('community:detail', review.pk)
 
     else:
@@ -175,6 +207,20 @@ def create_comment(request, review_pk):
             if len(request.user.review_set.all()) >= 10 and len(request.user.comment_set.all()) >= 10:
                 request.user.user_rank = 2
                 request.user.save()
+        # 스탬프 확인하기
+        stamp = get_object_or_404(Stamp, user=request.user)
+        if len(request.user.comment_set.all()) >= 30:
+            stamp.comment_stamp = True
+            stamp.counter += 1
+            stamp.save()
+
+        if stamp.counter == 15 and request.user.user_rank == 2:
+            request.user.user_rank = 3
+            request.user.save()
+        elif stamp.counter == 24:
+            stamp.all_stamp = True
+            stamp.counter += 1
+            stamp.save()
         return redirect('community:detail', review.pk)
     context = {
         'comment_form': comment_form,

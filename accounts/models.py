@@ -10,6 +10,7 @@ class User(AbstractUser):
 
 class Stamp(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    counter = models.IntegerField(default=0)
 
     # 기본 1개
     bonus = models.BooleanField(default=False)

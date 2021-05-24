@@ -8,6 +8,7 @@ from .models import Movie
 # Create your views here.
 def movie_update(request):
     if settings.IS_FIRST:
+        Movie.objects.all().delete()
         for i in range(1, 4):
             # data 받아오기
             my_url = f'https://api.themoviedb.org/3/movie/popular?api_key=fae9dc8695dc36b190fa7f4146fc979f&page={i}'
@@ -20,7 +21,10 @@ def movie_update(request):
                 title = movie.get('original_title')
                 movie_id = movie.get('id')
                 overview = movie.get('overview')
-                release_date = movie.get('release_date')
+                if movie.get('release_date'):
+                    release_date = movie.get('release_date')
+                else:
+                    release_date = '2999-01-01'
                 poster_path = movie.get('poster_path')
                 popularity = movie.get('popularity')
                 vote_count = movie.get('vote_count')
@@ -28,7 +32,7 @@ def movie_update(request):
                 genre_ids = movie.get('genre_ids')
 
                 # Movie DB에 저장하기, 중복제거
-                (new_movie, created) = Movie.objects.get_or_create(title=title, overview=overview, release_date=release_date, poster_path=poster_path, popularity=popularity, vote_count=vote_count, vote_average=vote_average, genres=genre_ids, movie_id=movie_id)
+                Movie.objects.create(title=title, overview=overview, release_date=release_date, poster_path=poster_path, popularity=popularity, vote_count=vote_count, vote_average=vote_average, genres=genre_ids, movie_id=movie_id)
                 settings.IS_FIRST = False
     return redirect('movies:index')
 

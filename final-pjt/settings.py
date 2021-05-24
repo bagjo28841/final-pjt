@@ -126,6 +126,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'final-pjt' / 'static',
+    BASE_DIR / 'accounts' / 'static',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
