@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load bootstrap5 %}
 {% block content %}
   <h2 class="text-center">DETAIL</h2>
   <h3>{{ review.pk }} 번째 글</h3>
@@ -11,10 +11,10 @@
   <p>작성 시각: {{ review.created_at }}</p>
   <p>수정 시각: {{ review.updated_at }}</p>
   {% if request.user == review.user %}
-    <a href="{% url 'community:update' review.pk %}"><button>글 수정</button></a> 
+    <a href="{% url 'community:update' review.pk %}"><button class="btn btn-outline-primary btn-sm">글 수정</button></a> 
     <form action="{% url 'community:delete' review.pk %}" method="POST">
       {% csrf_token %}
-      <button>글 삭제</button>
+      <button class="btn btn-outline-danger btn-sm">글 삭제</button>
     </form>
   {% endif %}
   <hr>
@@ -26,18 +26,9 @@
     <div>
       <span>{{ comment.user }} - {{ comment.content }}</span>
       {% if request.user == comment.user %}
-
-        <form class="comment-form" data-review-id="{{ review.pk }}" data-comment-id="{{ comment.pk }}">
-          <button id="comment-{{ comment.pk }}">댓글 수정</button>
-          <input type="text" id="input-{{ comment.pk }}" style="display: none;" name="text">
-        </form>
-        <form class="updated-form" data-review-id="{{ review.pk }}" data-comment-id="{{ comment.pk }}">
-          <button id="updated-{{ comment.pk }}" style="display: none;">수정 완료</button>
-        </form>
-
-        <form action="{% url 'community:delete_comment' review.pk comment.pk %}" method="POST">
+        <form action="{% url 'community:delete_comment' review.pk comment.pk %}" method="POST" style="display: inline;">
           {% csrf_token %}
-          <button>댓글 삭제</button>
+          <button class="btn btn-outline-danger btn-sm">댓글 삭제</button>
         </form>
       {% endif %}
     </div>
@@ -48,71 +39,12 @@
   {% if request.user.is_authenticated %}
     <form action="{% url 'community:create_comment' review.pk %}" method="POST">
       {% csrf_token %}
-      {{ comment_form }}
-      <input type="submit">
+      {% bootstrap_form comment_form %}
+      <button class="btn btn-outline-primary btn-sm">Submit</button>
     </form>
   {% else %}
     <a href="{% url 'accounts:login' %}">[댓글을 작성하려면 로그인하세요.]</a>
   {% endif %}
   <a href="{% url 'community:index' %}">[back]</a>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-  // 댓글 수정
-  const commentForms = document.querySelectorAll('.comment-form')
-  const updatedForms = document.querySelectorAll('.updated-form')
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-  commentForms.forEach((form) => {
-      form.addEventListener('submit', function (event) {
-        event.preventDefault()
-        const commentId = event.target.dataset.commentId
-        const reviewId = event.target.dataset.reviewId
-
-        axios({
-          method: 'get',
-          url: `http://127.0.0.1:8000/community/${reviewId}/update_comment/${commentId}/`,
-          headers: {'X-CSRFToken': csrftoken},
-        })
-          .then((response) => {
-            // 원래 댓글 내용 수정form으로 불러오기
-            const updateForm = document.querySelector(`#input-${commentId}`)
-            const updateBtn = document.querySelector(`#updated-${commentId}`)
-            updateForm.style = 'display: inline'
-            updateForm.value = response.data.comment_content
-            updateBtn.style = 'display: inline'
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      })
-    })
-  updatedForms.forEach((form) => {
-      form.addEventListener('submit', function (event) {
-        event.preventDefault()
-        const commentId = event.target.dataset.commentId
-        const reviewId = event.target.dataset.reviewId
-        const updateForm = document.querySelector(`#input-${commentId}`)
-        // const content = updateForm.name
-        // console.log(content)
-        axios({
-          method: 'post',
-          url: `http://127.0.0.1:8000/community/${reviewId}/update_comment/${commentId}/`,
-          headers: {'X-CSRFToken': csrftoken},
-          data: {
-            text: "text",
-          },
-        })
-          .then((response) => {
-            // 수정사항 DB에 저장
-            updateForm.style = 'display: none'
-            const updateBtn = document.querySelector(`#updated-${commentId}`)
-            updateBtn.style = 'display: none'
-
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      })
-    })
-</script>
 {% endblock  %}

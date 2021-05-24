@@ -12,6 +12,7 @@
       <div class="card-body">
         <h4 id="genres" data-genres="{{ movie.genres }}" class="card-title">{{ movie.title }}</h4>
         <p class="card-text">Release Date : {{ movie.release_date}}</p>
+        <p class="card-text">Genres : {% for genre in genres %}{% if forloop.last %}{{ genre }} {% else %}{{ genre }}, {% endif %}{% endfor %}</p>
         <p class="card-text">{{ movie.overview }}</p>
         <p class="card-text">Popularity : {{ movie.popularity }}</p>
         <p class="card-text">Vote Average : {{ movie.vote_average }}</p>

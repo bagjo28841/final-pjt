@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    followers = models.ManyToManyField('self', symmetrical=False, related_name='followings')
+    followers = models.ManyToManyField('self', symmetrical=False, related_name='followings', blank=True)
     user_rank = models.IntegerField(default=1)
 
 
