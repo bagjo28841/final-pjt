@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-
+{% load bootstrap5 %}
 {% block content %}
   <h1 class="text-center">UPDATE</h1>
   <form action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit">
+    {% bootstrap_form form %}
+    <button class="btn btn-outline-primary btn-sm">Submit</button>
   </form>
   <hr>
   <a href="{% url 'community:detail' review.pk %}">[back]</a>

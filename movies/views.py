@@ -50,9 +50,34 @@ def index(request):
 @require_GET
 def detail(request, movie_id):
     movie = get_object_or_404(Movie, movie_id=movie_id)
-
+    genre_dict = {
+        28: 'Action',
+        12: 'Adventure',
+        16: 'Animation',
+        35: 'Comedy',
+        80: 'Crime',
+        99: 'Documentary',
+        18: 'Drama',
+        10751: 'Family',
+        14: 'Fantasy',
+        36: 'History',
+        27: 'Horror',
+        10402: 'Music',
+        9648: 'Mystery',
+        10749: 'Romance',
+        878: 'Science Fiction',
+        10770: 'TV Movie',
+        53: 'Thriller',
+        10752: 'War',
+        37: 'Western',
+    }
+    genre_ids = list(map(int, movie.genres[1:-1].split(', ')))
+    genres = []
+    for genre in genre_ids:
+        genres.append(genre_dict.get(genre))
     context = {
         'movie': movie,
+        'genres': genres,
     }
     return render(request, 'movies/detail.html', context)
 

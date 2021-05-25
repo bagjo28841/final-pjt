@@ -51,81 +51,100 @@ def create(request, movie_id):
                 genre_ids = list(map(int, movie.genres[1:-1].split(', ')))
                 for genre in genre_ids:
                     if genre == 28:
-                        stamp.action = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.action:
+                            stamp.action = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 12:
-                        stamp.adventure = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.adventure:
+                            stamp.adventure = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 16:
-                        stamp.animation = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.animation:
+                            stamp.animation = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 35:
-                        stamp.comedy = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.comedy:
+                            stamp.comedy = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 80:
-                        stamp.crime = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.crime:
+                            stamp.crime = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 99:
-                        stamp.documentary = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.documentary:
+                            stamp.documentary = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 18:
-                        stamp.drama = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.drama:
+                            stamp.drama = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 10751:
-                        stamp.family = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.family:
+                            stamp.family = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 14:
-                        stamp.fantasy = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.fantasy:
+                            stamp.fantasy = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 36:
-                        stamp.history = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.history:
+                            stamp.history = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 27:
-                        stamp.horror = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.horror:
+                            stamp.horror = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 10402:
-                        stamp.music = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.music:
+                            stamp.music = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 9648:
-                        stamp.mystery = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.mystery:
+                            stamp.mystery = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 10749:
-                        stamp.romance = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.romance:
+                            stamp.romance = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 878:
-                        stamp.science_fiction = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.science_fiction:
+                            stamp.science_fiction = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 10770:
-                        stamp.tv_movie = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.tv_movie:
+                            stamp.tv_movie = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 53:
-                        stamp.thriller = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.thriller:
+                            stamp.thriller = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 10752:
-                        stamp.war = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.war:
+                            stamp.war = True
+                            stamp.counter += 1
+                            continue
                     elif genre == 37:
-                        stamp.western = True
-                        stamp.counter += 1
-                        continue
+                        if not stamp.western:
+                            stamp.western = True
+                            stamp.counter += 1
+                            continue
                 stamp.save()
             
             # 3단계 등업 조건 확인
