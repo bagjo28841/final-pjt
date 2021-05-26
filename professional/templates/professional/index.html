@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Pro Community</h1>
+  <h1 class="entitle fst-italic">Pro-Community</h1>
   <hr>
   <table class="table">
   <thead>
@@ -9,9 +9,11 @@
       <th scope="col"></th>
       <th scope="col">Title</th>
       <th scope="col">Movie</th>
+      <th scope="col">Rating</th>
       <th scope="col">User</th>
-      <th scope="col"></th>
+      <th scope="col">Date</th>
       <th scope="col">Likes</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -20,7 +22,10 @@
       <th scope="row">{{ proreview.pk }}</th>
       <td><a href="{% url 'professional:detail' proreview.pk %}">{{ proreview.title }}</a></td>
       <td><a href="{% url 'movies:detail' proreview.movie.movie_id %}">{{ proreview.movie.title }}</a></td>
+      <td><p>{{ proreview.rank }}</p></td>
       <td><a href="{% url 'accounts:profile' proreview.user.username %}">{{ proreview.user }}</a></td>
+      <td><p>{{ proreview.created_at|date:'Y. m. d' }}</p></td>
+      <td><p id="like-count-{{ proreview.pk }}">{{ proreview.like_users.all|length }}</p></td></td>
       <td>
         <form class="d-inline like-form" data-proreview-id="{{ proreview.pk }}">
           {% csrf_token %}
@@ -35,7 +40,6 @@
           {% endif %}
         </form>
       </td>
-      <td><p id="like-count-{{ proreview.pk }}">{{ proreview.like_users.all|length }}</p></td></td>
     </tr>
     {% endfor %}
   </tbody>

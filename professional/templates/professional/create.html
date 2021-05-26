@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
 
 {% block content %}
-  <h1 class="text-center">Pro CREATE</h1>
+  <h1 class="text-center entitle">Create ProReviews</h1>
   <form action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit">
+    {% bootstrap_form form %}
+    <button class="btn btn-outline-primary btn-sm">Submit</button>
   </form>
   <hr>
   <a href="{% url 'professional:index' %}">[back]</a>

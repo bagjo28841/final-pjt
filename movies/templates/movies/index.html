@@ -2,9 +2,10 @@
 {% load static %}
 
 {% block header %}
-  <header style="background-color: #cfd4da; height: 420px;">
-    <div class="d-flex justify-content-end me-5">
-      <img src="{% static 'stamp.png' %}" alt="stamp img" class="w-25">
+  <header style="background-color: #cfd4da; height: 280px;">
+    <div class="col-md-6 ms-5 px-0">
+      <h1 class="pt-4 display-4 fst-italic entitle">Rethink what a Review can do</h1>
+      <p class="lead my-3 fst-italic">If you want to get ahead, Write a review and Acquire a stamp</p>
     </div>
   </header>
 {% endblock  %}
@@ -18,9 +19,9 @@
         <div class="card">
           <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path}}" class="card-img-top" alt="poster img" style="height: 388.5px;">
           <div class="card-body" style="height: 192px;">
-            <h5 class="card-title">{{ movie.title }}</h5>
-            <p class="card-text">개봉일: {{ movie.release_date }}</p>
-            <p class="card-text">평점: {{ movie.vote_average }}</p>
+            <h5 class="card-title kotitle">{{ movie.title }}</h5>
+            <p class="card-text">Release Date: {{ movie.release_date|date:'Y. m. d' }}</p>
+            <p class="card-text">Vote Avg: {{ movie.vote_average }}</p>
           </div>        
         </div>
       </a>

@@ -57,7 +57,7 @@ def login(request):
                     stamp.all_stamp = True
                     stamp.counter += 1
                     stamp.save()
-            return redirect(request.GET.get('next') or 'community:index')
+            return redirect(request.GET.get('next') or 'movies:index')
     else:
         form = AuthenticationForm()
     context = {
