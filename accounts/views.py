@@ -15,7 +15,7 @@ from .forms import CustomUserCreationForm
 @require_http_methods(['GET', 'POST'])
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('community:index')
+        return redirect('movies:index')
 
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -24,7 +24,7 @@ def signup(request):
             auth_login(request, user)
             # 스탬프 생성
             Stamp.objects.create(user=request.user)
-            return redirect('community:index')
+            return redirect('movies:index')
     else:
         form = CustomUserCreationForm()
     context = {
@@ -36,7 +36,7 @@ def signup(request):
 @require_http_methods(['GET', 'POST'])
 def login(request):
     if request.user.is_authenticated:
-        return redirect('community:index')
+        return redirect('movies:index')
 
     if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)
@@ -50,6 +50,7 @@ def login(request):
                 stamp = get_object_or_404(Stamp, user=request.user)
                 stamp.joined_stamp = True
                 stamp.counter += 1
+                stamp.save()
                 if stamp.counter == 15 and request.user.user_rank == 2:
                     request.user.user_rank = 3
                     request.user.save()
@@ -77,9 +78,10 @@ def profile(request, username):
     person = get_object_or_404(get_user_model(), username=username)
     stamp = get_object_or_404(Stamp, user=person)
     # follower 스탬프 확인
-    if len(person.followers.all()) >= 30:
+    if len(person.followers.all()) >= 1:
         stamp.follower_stamp = True
         stamp.counter += 1
+        stamp.save()
         if stamp.counter == 15 and request.user.user_rank == 2:
             request.user.user_rank = 3
             request.user.save()

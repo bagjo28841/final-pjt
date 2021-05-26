@@ -22,9 +22,9 @@ def index(request):
 @login_required
 @require_http_methods(['GET', 'POST'])
 def create(request, movie_id):
+    movie = get_object_or_404(Movie, movie_id=movie_id)
     if request.method == 'POST':
         form = ReviewForm(request.POST) 
-        movie = get_object_or_404(Movie, movie_id=movie_id)
         stamp = get_object_or_404(Stamp, user=request.user)
         if form.is_valid():
             review = form.save(commit=False)
@@ -45,6 +45,7 @@ def create(request, movie_id):
                 if len(request.user.review_set.all()) >= 30:
                     stamp.review_stamp = True
                     stamp.counter += 1
+                    stamp.save()
 
                 # 장르 스탬프 확인하기
                 genre_ids = list(map(int, movie.genres[1:-1].split(', ')))
@@ -160,6 +161,7 @@ def create(request, movie_id):
         form = ReviewForm()
     context = {
         'form': form,
+        'movie': movie,
     }
     return render(request, 'community/create.html', context)
 

@@ -1,0 +1,309 @@
+[
+{
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$216000$0ZKrr9ECQSS4$01RTyRypHt9WS9IJLBox7n69JCt5UVqUyxYdcX/GJOA=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2021-05-26T06:34:56.339Z",
+        "user_rank": 1,
+        "groups": [],
+        "user_permissions": [],
+        "followers": []
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$216000$UQVR65pd82Va$i3XWgkV/iFGTdqhu/8BSyJRtDCqxhtEehval/46KNQk=",
+        "last_login": "2021-05-26T07:02:17.827Z",
+        "is_superuser": false,
+        "username": "totoro",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-05-26T06:35:27.671Z",
+        "user_rank": 1,
+        "groups": [],
+        "user_permissions": [],
+        "followers": [
+            3
+        ]
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$216000$nLwFN1X9RAZr$ZONTZSD/MqrjB6krs0CrHep3ytR04LuDYeQFj6dGyFk=",
+        "last_login": "2021-05-26T08:00:40.350Z",
+        "is_superuser": false,
+        "username": "totoro2",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-05-26T06:52:43.279Z",
+        "user_rank": 1,
+        "groups": [],
+        "user_permissions": [],
+        "followers": []
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$216000$HhMcZpAIpKTW$plOKmp7dQ4jBNel6lJxG3/+b2kdSg5E6hJ7iRzhh82g=",
+        "last_login": "2021-05-26T07:02:05.982Z",
+        "is_superuser": false,
+        "username": "totoro3",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2021-05-26T07:02:05.833Z",
+        "user_rank": 1,
+        "groups": [],
+        "user_permissions": [],
+        "followers": []
+    }
+},
+{
+    "model": "accounts.stamp",
+    "pk": 1,
+    "fields": {
+        "user": 2,
+        "counter": 0,
+        "bonus": false,
+        "action": false,
+        "adventure": false,
+        "animation": false,
+        "comedy": false,
+        "crime": false,
+        "documentary": false,
+        "drama": false,
+        "family": false,
+        "fantasy": false,
+        "history": false,
+        "horror": false,
+        "music": false,
+        "mystery": false,
+        "romance": false,
+        "science_fiction": false,
+        "tv_movie": false,
+        "thriller": false,
+        "war": false,
+        "western": false,
+        "review_stamp": false,
+        "comment_stamp": false,
+        "follower_stamp": false,
+        "joined_stamp": false,
+        "all_stamp": false
+    }
+},
+{
+    "model": "accounts.stamp",
+    "pk": 2,
+    "fields": {
+        "user": 3,
+        "counter": 0,
+        "bonus": false,
+        "action": false,
+        "adventure": false,
+        "animation": false,
+        "comedy": false,
+        "crime": false,
+        "documentary": false,
+        "drama": false,
+        "family": false,
+        "fantasy": false,
+        "history": false,
+        "horror": false,
+        "music": false,
+        "mystery": false,
+        "romance": false,
+        "science_fiction": false,
+        "tv_movie": false,
+        "thriller": false,
+        "war": false,
+        "western": false,
+        "review_stamp": false,
+        "comment_stamp": false,
+        "follower_stamp": false,
+        "joined_stamp": false,
+        "all_stamp": false
+    }
+},
+{
+    "model": "accounts.stamp",
+    "pk": 3,
+    "fields": {
+        "user": 4,
+        "counter": 0,
+        "bonus": false,
+        "action": false,
+        "adventure": false,
+        "animation": false,
+        "comedy": false,
+        "crime": false,
+        "documentary": false,
+        "drama": false,
+        "family": false,
+        "fantasy": false,
+        "history": false,
+        "horror": false,
+        "music": false,
+        "mystery": false,
+        "romance": false,
+        "science_fiction": false,
+        "tv_movie": false,
+        "thriller": false,
+        "war": false,
+        "western": false,
+        "review_stamp": false,
+        "comment_stamp": false,
+        "follower_stamp": false,
+        "joined_stamp": false,
+        "all_stamp": false
+    }
+},
+{
+    "model": "community.review",
+    "pk": 16,
+    "fields": {
+        "title": "재밌게 봤습니다.",
+        "rank": 4,
+        "content": "배우의 연기가 좋았습니다.",
+        "created_at": "2021-05-26T08:00:27.539Z",
+        "updated_at": "2021-05-26T08:00:27.539Z",
+        "user": 2,
+        "movie": 535,
+        "like_users": [
+            3
+        ]
+    }
+},
+{
+    "model": "community.review",
+    "pk": 17,
+    "fields": {
+        "title": "생각보다 별로네요",
+        "rank": 2,
+        "content": "지루했습니다.",
+        "created_at": "2021-05-26T08:01:20.146Z",
+        "updated_at": "2021-05-26T08:01:20.146Z",
+        "user": 3,
+        "movie": 536,
+        "like_users": []
+    }
+},
+{
+    "model": "community.comment",
+    "pk": 2,
+    "fields": {
+        "content": "공감합니다.!",
+        "review": 16,
+        "user": 3,
+        "created_at": "2021-05-26T08:01:36.202Z",
+        "updated_at": "2021-05-26T08:01:36.202Z"
+    }
+},
+{
+    "model": "movies.movie",
+    "pk": 535,
+    "fields": {
+        "title": "Those Who Wish Me Dead",
+        "movie_id": 578701,
+        "release_date": "2021-05-05",
+        "popularity": 1932.947,
+        "vote_count": 280,
+        "vote_average": 7.1,
+        "overview": "A young boy finds himself pursued by two assassins in the Montana wilderness with a survival expert determined to protecting him - and a forest fire threatening to consume them all.",
+        "poster_path": "/xCEg6KowNISWvMh8GvPSxtdf9TO.jpg",
+        "genres": "[53, 18, 28, 9648]"
+    }
+},
+{
+    "model": "movies.movie",
+    "pk": 536,
+    "fields": {
+        "title": "Mortal Kombat",
+        "movie_id": 460465,
+        "release_date": "2021-04-07",
+        "popularity": 1909.664,
+        "vote_count": 2659,
+        "vote_average": 7.6,
+        "overview": "Washed-up MMA fighter Cole Young, unaware of his heritage, and hunted by Emperor Shang Tsung's best warrior, Sub-Zero, seeks out and trains with Earth's greatest champions as he prepares to stand against the enemies of Outworld in a high stakes battle for the universe.",
+        "poster_path": "/nkayOAUBUu4mMvyNf9iHSUiPjF1.jpg",
+        "genres": "[28, 14, 12]"
+    }
+},
+{
+    "model": "movies.movie",
+    "pk": 537,
+    "fields": {
+        "title": "Tom Clancy's Without Remorse",
+        "movie_id": 567189,
+        "release_date": "2021-04-29",
+        "popularity": 1840.479,
+        "vote_count": 999,
+        "vote_average": 7.3,
+        "overview": "An elite Navy SEAL uncovers an international conspiracy while seeking justice for the murder of his pregnant wife.",
+        "poster_path": "/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
+        "genres": "[28, 53, 10752]"
+    }
+},
+{
+    "model": "movies.movie",
+    "pk": 538,
+    "fields": {
+        "title": "The Unholy",
+        "movie_id": 632357,
+        "release_date": "2021-03-31",
+        "popularity": 1878.397,
+        "vote_count": 301,
+        "vote_average": 7.3,
+        "overview": "Alice, a young hearing-impaired girl who, after a supposed visitation from the Virgin Mary, is inexplicably able to hear, speak and heal the sick. As word spreads and people from near and far flock to witness her miracles, a disgraced journalist hoping to revive his career visits the small New England town to investigate. When terrifying events begin to happen all around, he starts to question if these phenomena are the works of the Virgin Mary or something much more sinister.",
+        "poster_path": "/lcCKVNQKAqZlLI5qNRJK8MPahbI.jpg",
+        "genres": "[27]"
+    }
+},
+{
+    "model": "movies.movie",
+    "pk": 539,
+    "fields": {
+        "title": "Godzilla vs. Kong",
+        "movie_id": 399566,
+        "release_date": "2021-03-24",
+        "popularity": 1591.307,
+        "vote_count": 5645,
+        "vote_average": 8.1,
+        "overview": "In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages.",
+        "poster_path": "/pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg",
+        "genres": "[878, 28, 18]"
+    }
+},
+{
+    "model": "movies.movie",
+    "pk": 540,
+    "fields": {
+        "title": "Vanquish",
+        "movie_id": 804435,
+        "release_date": "2021-04-16",
+        "popularity": 1583.635,
+        "vote_count": 105,
+        "vote_average": 6.0,
+        "overview": 
