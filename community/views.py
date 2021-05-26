@@ -29,8 +29,7 @@ def create(request, movie_id):
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
-            review.movie_id = movie_id
-            review.movie_title = movie.title
+            review.movie = movie
             review.save()
             
             # 등업 확인하기

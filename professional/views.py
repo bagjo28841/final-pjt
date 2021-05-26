@@ -29,8 +29,7 @@ def create(request, movie_id):
             if form.is_valid():
                 proreview = form.save(commit=False)
                 proreview.user = request.user
-                proreview.movie_id = movie_id
-                proreview.movie_title = movie.title
+                proreview.movie = movie
                 proreview.save()
                 return redirect('professional:detail', proreview.pk)
         else:

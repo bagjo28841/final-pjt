@@ -2,17 +2,17 @@
 {% load bootstrap5 %}
 {% block content %}
   <h2 class="text-center">DETAIL</h2>
-  <h3>{{ review.pk }} 번째 글</h3>
+  <h3>{{ review.title }}</h3>
+  <p>작성자: {{ review.user }}</p>
+  <p class="d-flex justify-content-end" style="font-size: 13px;">작성 시각: {{ review.created_at }}</p>
   <hr>
-  <p>제목: {{ review.title }}</p>
-  <p>영화 제목: <a href="{% url 'movies:detail' review.movie_id %}">{{ review.movie_title }}</a></p>
-  <p>내용: {{ review.content }}</p>
+  <h5>영화: <a href="{% url 'movies:detail' review.movie.movie_id %}">{{ review.movie.title }}</a></h5>
   <p>평점: {{ review.rank }}</p>
-  <p>작성 시각: {{ review.created_at }}</p>
-  <p>수정 시각: {{ review.updated_at }}</p>
+  <p>{{ review.content|linebreaks }}</p>
+  <br>
   {% if request.user == review.user %}
     <a href="{% url 'community:update' review.pk %}"><button class="btn btn-outline-primary btn-sm">글 수정</button></a> 
-    <form action="{% url 'community:delete' review.pk %}" method="POST">
+    <form action="{% url 'community:delete' review.pk %}" method="POST" style="display: inline;">
       {% csrf_token %}
       <button class="btn btn-outline-danger btn-sm">글 삭제</button>
     </form>

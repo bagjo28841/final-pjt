@@ -19,7 +19,7 @@
     <tr>
       <th scope="row">{{ proreview.pk }}</th>
       <td><a href="{% url 'professional:detail' proreview.pk %}">{{ proreview.title }}</a></td>
-      <td><a href="{% url 'movies:detail' proreview.movie_id %}">{{ proreview.movie_title }}</a></td>
+      <td><a href="{% url 'movies:detail' proreview.movie.movie_id %}">{{ proreview.movie.title }}</a></td>
       <td><a href="{% url 'accounts:profile' proreview.user.username %}">{{ proreview.user }}</a></td>
       <td>
         <form class="d-inline like-form" data-proreview-id="{{ proreview.pk }}">

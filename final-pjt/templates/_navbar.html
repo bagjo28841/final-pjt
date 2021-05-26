@@ -1,59 +1,98 @@
 {% load static %}
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #cfd4da;">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'movies:index' %}"><img src="{% static 'joy_image.jpg' %}" style="height: 50px;" alt="brand img"></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="d-flex">
-        <div class="nav navbar-nav me-auto">
-          <a class="nav-link active" aria-current="page" href="{% url 'movies:index' %}">Home</a>
-          {% if request.user.is_authenticated %}
-          <a class="nav-link" href="{% url 'community:index' %}">Community</a>
+    <a class="navbar-brand" href="{% url 'movies:index' %}"><img src="{% static 'joy_image.png' %}" style="height: 50px;" alt="brand img"></a>
+    <a class="nav-link active ahover" aria-current="page" href="{% url 'movies:index' %}">Home</a>
+    <div class="collapse navbar-collapse" id="navbarToggler">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link ahover" href="{% url 'community:index' %}">Community</a>
+        </li>
           {% if request.user.user_rank < 3 %}
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#proModal">
-              Pro-Community
+            <li class="nav-item">
+              <button type="button" class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#proModal">
+                Pro-Community
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="proModal" tabindex="-1" aria-labelledby="proModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="proModalLabel">등급제한</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      3등급 이상만 이용 가능한 게시판입니다!
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="{% url 'accounts:profile' user.username %}"><button type="button" class="btn" style="background-color: #d5e6bd;">스탬프 확인하러 가기</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link ahover" href="{% url 'professional:index' %}">Pro-Community</a>
+            </li>
+          {% endif %}
+      </ul>
+      <ul class="navbar-nav d-flex">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link ahover" href="{% url 'accounts:profile' request.user.username %}">Hello, {{ request.user.username }}</a>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#stampModal">
+              회원 등급: {{ user.user_rank }}
             </button>
             <!-- Modal -->
-            <div class="modal fade" id="proModal" tabindex="-1" aria-labelledby="proModalLabel" aria-hidden="true">
+            <div class="modal fade" id="stampModal" tabindex="-1" aria-labelledby="stampModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="proModalLabel">등급제한</h5>
+                    <h5 class="modal-title" id="stampModalLabel">스탬프를 모아보세요!</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="modal-body">
-                    3등급 이상만 이용 가능한 게시판입니다!
+                  <div class="modal-body text-center">
+                  <figure class="figure">
+                    <img src="{% static 'stamp.png' %}" alt="stamp" class="w-75">
+                    <figcaption class="figure-caption mt-3">등급 2를 달성하시면 스탬프를 찍을 수 있습니다.</figcaption>
+                    <figcaption class="figure-caption">스탬프를 모아 Pro-Community를 즐겨보세요!</figcaption>
+                  </figure>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a href="{% url 'accounts:profile' user.username %}"><button type="button" class="btn btn-warning">스탬프 확인하러 가기</button></a>
+                    {% if request.user.is_authenticated %}
+                      <a href="{% url 'accounts:profile' user.username %}"><button type="button" class="btn" style="background-color: #d5e6bd;">스탬프 확인하러 가기</button></a>
+                    {% else %}
+                      <a href="{% url 'accounts:signup' %}"><button type="button" class="btn" style="background-color: #d5e6bd;">가입하러 가기</button></a>
+                    {% endif %}
                   </div>
                 </div>
               </div>
             </div>
-          {% else %}
-            <a class="nav-link" href="{% url 'professional:index' %}">Pro-Community</a>
-          {% endif %}
-          <form action="{% url 'accounts:logout' %}" method="POST">
-            {% csrf_token %}
-            <button class="nav-link btn btn-link">Logout</button>
-          </form>
-          {% else %}
-            <a class="nav-link" href="{% url 'accounts:signup' %}">Signup</a>
-            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-          {% endif %}
-        </div>
-        <div class="nav navbar-nav">
-          {% if request.user.is_authenticated %}
-            <a class="nav-link" href="{% url 'accounts:profile' request.user.username %}">Hello, {{ request.user.username }}</a>
-            <a class="nav-link">회원 등급: {{ user.user_rank }}</a>
-          {% endif %}
-        </div>
-      </div>
+          </li>
+          <li class="nav-item">
+            <form action="{% url 'accounts:logout' %}" method="POST">
+              {% csrf_token %}
+              <button class="nav-link btn btn-link">Logout</button>
+            </form>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link ahover" href="{% url 'accounts:signup' %}">Signup</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ahover" href="{% url 'accounts:login' %}">Login</a>
+          </li> 
+        {% endif %}
+      </ul>
     </div>
   </div>
 </nav>

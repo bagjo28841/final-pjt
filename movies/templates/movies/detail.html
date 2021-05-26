@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h3>Movie Info</h3>
-  <br>
   <div class="card mb-3">
   <div class="row g-0">
     <div class="col-md-4">
@@ -20,55 +18,35 @@
         {% if user.user_rank == 4 %}
           <a href="{% url 'professional:create' movie.movie_id %}"><button class="btn btn-outline-secondary">[Pro 리뷰 작성하러 가기]</button></a>
         {% endif %}
+        <hr>
+        <h4 class="mb-3">최신 리뷰 목록</h4>
+        <ul class="list-group">
+          {% for review in reviews %}
+            <a href="{% url 'community:detail' review.pk %}" class="list-group-item">{{ review.title }} [{{ review.comment_set.all|length }}]</a>
+          {% endfor %}
+        </ul>
+        
       </div>
     </div>
   </div>
   </div>
+  <hr>
   
   {% comment %} 장르 추천기능 {% endcomment %}
   <h3>Recommendations by Genres</h3>
-  <div id="recGenre" class="row row-cols-2 row-cols-md-6 row-cols-lg-8 g-4">
+  <br>
+  <div id="recGenre" class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+  {% for recommend in recommend_list %}
+    <a href="{% url 'movies:detail' recommend.id %}">
+      <div class="col">
+        <div class="card">
+          <img src="https://image.tmdb.org/t/p/w500/{{ recommend.poster_path }}" class="card-img-top" alt="poster img" style="height: 246px;">
+          <div class="card-body" style="height: 95px; padding-top: 7px;">
+            <p class="card-title" style="font-size: 14px;">{{ recommend.title }}</p>
+          </div>
+        </div>
+      </div>
+    </a>
+  {% endfor %}
   </div>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    const genres = document.querySelector('#genres')
-    const genre_str = genres.dataset.genres
-    let genresId = genre_str.replace('[', '')
-    genresId = genresId.replace(']', '')
-    genresId = genresId.replaceAll(' ', '')
-
-    // 장르 추천기능 
-    const myUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${genresId}&api_key=fae9dc8695dc36b190fa7f4146fc979f`
-    axios.get(myUrl)
-    .then((response) => {
-      const recommendArray = response.data.results
-      const container = document.querySelector('#recGenre')
-      console.log(container)
-      recommendArray.forEach((movie) => {
-        const colDiv = document.createElement('div')
-        colDiv.setAttribute('class', 'col')
-        container.appendChild(colDiv)
-
-        const cardDiv = document.createElement('div')
-        cardDiv.setAttribute('class', 'card')
-        colDiv.appendChild(cardDiv)
-
-        const imgSrc = document.createElement('img')
-        imgSrc.setAttribute('class', 'card-img-top')
-        imgSrc.setAttribute('src', `https://image.tmdb.org/t/p/w500/${movie.poster_path}`)
-        cardDiv.appendChild(imgSrc)
-
-        const cardBody = document.createElement('div')
-        cardBody.setAttribute('class', 'card-body')
-        cardDiv.appendChild(cardBody)
-
-        const recMovieTitle = document.createElement('h5')
-        recMovieTitle.setAttribute('class', 'card-title')
-        recMovieTitle.innerText = movie.title
-        cardBody.appendChild(recMovieTitle)
-      })
-    })
-  </script>
 {% endblock %}

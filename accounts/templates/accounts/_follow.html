@@ -1,27 +1,26 @@
-<div class="jumbotron text-center" style="background-color: #d5e6bd;">
-  <p class="lead mb-1">작성자 정보</p>
-  <h1 class="display-4">{{ person.username }}</h1>
-  <hr>
-  {% with followings=person.followings.all followers=person.followers.all %}
-    <p class="lead">
-      팔로잉 : 
-      <span id="followings-count">{{ followings|length }}</span>
-      / 팔로워 : 
-      <span id="followers-count">{{ followers|length }}</span>
-    </p>
-    <!-- 팔로우 버튼 -->
-    {% if request.user != person %}
-      <form class="follow-form" data-person-id="{{ person.pk }}">
-        {% csrf_token %}
-        {% if request.user in followers %}
-          <button class="btn-lg btn-secondary" role="button" id="follow-btn">Unfollow</button>
-        {% else %}
-          <button class="btn-lg btn-primary" role="button" id="follow-btn">Follow</button>
-        {% endif %}
-      </form>
-    {% endif %}
-  {% endwith %}
-</div>
+<br>
+<h1 class="display-4">{{ person.username }}</h1>
+{% with followings=person.followings.all followers=person.followers.all %}
+  <p>User Rank: {{ person.user_rank }}</p>
+  <p class="lead">
+    Following : 
+    <span id="followings-count">{{ followings|length }}</span>
+    / Followers : 
+    <span id="followers-count">{{ followers|length }}</span>
+  </p>
+  <!-- 팔로우 버튼 -->
+  {% if request.user != person %}
+    <form class="follow-form" data-person-id="{{ person.pk }}">
+      {% csrf_token %}
+      {% if request.user in followers %}
+        <button class="btn" id="follow-btn" style="background-color: #d5e6bd;">Unfollow</button>
+      {% else %}
+        <button class="btn" id="follow-btn" style="background-color: #d5e6bd;">Follow</button>
+      {% endif %}
+    </form>
+  {% endif %}
+{% endwith %}
+<hr>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>

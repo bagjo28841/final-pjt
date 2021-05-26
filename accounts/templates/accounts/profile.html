@@ -3,249 +3,243 @@
 
 {% block content %}
 {% include 'accounts/_follow.html' %}
-<div style="float: left;">
-  <h1 class="text-center">{{ person.username }}님의 프로필</h1>
-  <h2 class="text-center">{{ person.user_rank }} 등급</h2>
-  <hr>
+<div class="row">
+  <section class="col" style="float: left;">
+    <h3>Reviews</h3>
+    {% for review in person.review_set.all %}
+      <div>- <a href="{% url 'community:detail' review.pk %}">{{ review.title }}</a></div>
+    {% endfor %}
+    <hr>
 
-  <h2>{{ person.username }}가 쓴 글</h2>
-  {% for review in person.review_set.all %}
-    <div>{{ review.title }}</div>
-  {% endfor %}
+    <h3>Comments</h3>
+    {% for comment in person.comment_set.all %}
+      <div>- <a href="{% url 'community:detail' comment.review.pk %}">{{ comment.content }}</a></div>
+    {% endfor %}
+    <hr>
 
-  <hr>
+    <h3>Likes</h3>
+    {% for review in person.like_reviews.all %}
+      <div>- <a href="{% url 'community:detail' review.pk %}">{{ review.title }}</a></div>
+    {% endfor %}
+    <hr>
 
-  <h2>{{ person.username }}가 쓴 댓글</h2>
-  {% for comment in person.comment_set.all %}
-    <div>{{ comment.content }}</div>
-  {% endfor %}
+    <a href="{% url 'community:index' %}">[back]</a>
+  </section>
 
-  <hr>
-
-  <h2>{{ person.username }}가 좋아요한 글</h2>
-  {% for review in person.like_reviews.all %}
-    <div>{{ review.title }}</div>
-  {% endfor %}
-
-  <hr>
-
-  <a href="{% url 'community:index' %}">[back]</a>
+  <aside class="col ms-4" style="float: right;">
+    <h2 id="get-stamp" data-my-stamp="{{ stamp }}">Stamp Zone</h2>
+    <p>총 스탬프: {{ stamp.counter }}개</p>
+    <table class="table table-bordered text-center" style="font-size: 13px;">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 104px;">
+          {% if stamp.action %}
+            <img src="{% static 'action2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'action.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Action
+        </th>
+        <th scope="col" style="width: 104px;">
+          {% if stamp.adventure %}
+            <img src="{% static 'adventure2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'adventure.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Adventure
+        </th>
+        <th scope="col" style="width: 104px;">
+          {% if stamp.animation %}
+            <img src="{% static 'animation2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'animation.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Animation
+        </th>
+        <th scope="col" style="width: 104px;">
+          {% if stamp.comedy %}
+            <img src="{% static 'comedy2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'comedy.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Comedy
+        </th>
+        <th scope="col" style="width: 104px;">
+          {% if stamp.crime %}
+            <img src="{% static 'crime2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'crime.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Crime
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">
+          {% if stamp.documentary %}
+            <img src="{% static 'documentary2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'documentary.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Documentary
+        </th>
+        <td>
+          {% if stamp.drama %}
+            <img src="{% static 'drama2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'drama.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Drama
+        </td>
+        <td>
+          {% if stamp.family %}
+            <img src="{% static 'family2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'family.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Family
+        </td>
+        <td>
+          {% if stamp.fantasy %}
+            <img src="{% static 'fantasy2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'fantasy.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Fantasy
+        </td>
+        <td>
+          {% if stamp.history %}
+            <img src="{% static 'history2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'history.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>History
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          {% if stamp.horror %}
+            <img src="{% static 'horror2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'horror.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Horror
+        </th>
+        <td>
+          {% if stamp.music %}
+            <img src="{% static 'music2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'music.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Music
+        </td>
+        <td>
+          <img src="{% static 'bonus.png' %}" alt="" style="height: 50px; width: 50px;">
+          <br>Bonus
+        </td>
+        <td>
+          {% if stamp.mystery %}
+            <img src="{% static 'mystery2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'mystery.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Mystery
+        </td>
+        <td>
+          {% if stamp.romance %}
+            <img src="{% static 'romance2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'romance.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Romance
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          {% if stamp.science_fiction %}
+            <img src="{% static 'sf2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'sf.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>SF
+        </th>
+        <td>
+          {% if stamp.tv_movie %}
+            <img src="{% static 'tvmovie2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'tvmovie.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>TV Movie
+        </td>
+        <td>
+          {% if stamp.thriller %}
+            <img src="{% static 'thriller2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'thriller.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Thriller
+        </td>
+        <td>
+          {% if stamp.war %}
+            <img src="{% static 'war2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'war.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>War
+        </td>
+        <td>
+          {% if stamp.western %}
+            <img src="{% static 'western2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'western.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Western
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          {% if stamp.review_stamp %}
+            <img src="{% static 'review2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'review.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Review
+        </th>
+        <td>
+          {% if stamp.comment_stamp %}
+            <img src="{% static 'comment2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'comment.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Comments
+        </td>
+        <td>
+          {% if stamp.follower_stamp %}
+            <img src="{% static 'follower2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'follower.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Followers
+        </td>
+        <td>
+          {% if stamp.joined_stamp %}
+            <img src="{% static 'joined2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'joined.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Joined
+        </td>
+        <td>
+          {% if stamp.all_stamp %}
+            <img src="{% static 'all2.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="{% static 'all.png' %}" alt="" style="height: 50px; width: 50px;">
+          {% endif %}
+          <br>Total 24
+        </td>
+      </tr>
+    </tbody>
+  </aside>
 </div>
-
-<aside style="float: right;">
-  <h2 id="get-stamp" data-my-stamp="{{ stamp }}">Stamp Zone</h2>
-  <p>총 스탬프: {{ stamp.counter }}개</p>
-  <table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col">
-        {% if stamp.action %}
-          <img src="{% static 'action2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'action.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Action
-      </th>
-      <th scope="col">
-        {% if stamp.adventure %}
-          <img src="{% static 'adventure2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'adventure.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Adventure
-      </th>
-      <th scope="col">
-        {% if stamp.animation %}
-          <img src="{% static 'animation2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'animation.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Animation
-      </th>
-      <th scope="col">
-        {% if stamp.comedy %}
-          <img src="{% static 'comedy2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'comedy.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Comedy
-      </th>
-      <th scope="col">
-        {% if stamp.crime %}
-          <img src="{% static 'crime2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'crime.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Crime
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">
-        {% if stamp.documentary %}
-          <img src="{% static 'documentary2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'documentary.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Documentary
-      </th>
-      <td>
-        {% if stamp.drama %}
-          <img src="{% static 'drama2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'drama.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Drama
-      </td>
-      <td>
-        {% if stamp.family %}
-          <img src="{% static 'family2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'family.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Family
-      </td>
-      <td>
-        {% if stamp.fantasy %}
-          <img src="{% static 'fantasy2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'fantasy.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Fantasy
-      </td>
-      <td>
-        {% if stamp.history %}
-          <img src="{% static 'history2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'history.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>History
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">
-        {% if stamp.horror %}
-          <img src="{% static 'horror2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'horror.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Horror
-      </th>
-      <td>
-        {% if stamp.music %}
-          <img src="{% static 'music2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'music.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Music
-      </td>
-      <td>
-        <img src="{% static 'bonus.png' %}" alt="" style="height: 50px; width: 50px;">
-        <br>Bonus
-      </td>
-      <td>
-        {% if stamp.mystery %}
-          <img src="{% static 'mystery2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'mystery.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Mystery
-      </td>
-      <td>
-        {% if stamp.romance %}
-          <img src="{% static 'romance2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'romance.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Romance
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">
-        {% if stamp.science_fiction %}
-          <img src="{% static 'sf2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'sf.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Science Fiction
-      </th>
-      <td>
-        {% if stamp.tv_movie %}
-          <img src="{% static 'tvmovie2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'tvmovie.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>TV Movie
-      </td>
-      <td>
-        {% if stamp.thriller %}
-          <img src="{% static 'thriller2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'thriller.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Thriller
-      </td>
-      <td>
-        {% if stamp.war %}
-          <img src="{% static 'war2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'war.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>War
-      </td>
-      <td>
-        {% if stamp.western %}
-          <img src="{% static 'western2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'western.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Western
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">
-        {% if stamp.review_stamp %}
-          <img src="{% static 'review2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'review.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Review
-      </th>
-      <td>
-        {% if stamp.comment_stamp %}
-          <img src="{% static 'comment2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'comment.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Comments
-      </td>
-      <td>
-        {% if stamp.follower_stamp %}
-          <img src="{% static 'follower2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'follower.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Followers
-      </td>
-      <td>
-        {% if stamp.joined_stamp %}
-          <img src="{% static 'joined2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'joined.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Joined
-      </td>
-      <td>
-        {% if stamp.all_stamp %}
-          <img src="{% static 'all2.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% else %}
-          <img src="{% static 'all.png' %}" alt="" style="height: 50px; width: 50px;">
-        {% endif %}
-        <br>Total 24
-      </td>
-    </tr>
-  </tbody>
-
-</aside>
 {% endblock  %}

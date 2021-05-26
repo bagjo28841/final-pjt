@@ -10,17 +10,20 @@
       <th scope="col">Title</th>
       <th scope="col">Movie</th>
       <th scope="col">User</th>
-      <th scope="col"></th>
+      <th scope="col">Date</th>
       <th scope="col">Likes</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
     {% for review in reviews %}
     <tr>
       <th scope="row">{{ review.pk }}</th>
-      <td><a href="{% url 'community:detail' review.pk %}">{{ review.title }}</a></td>
-      <td><a href="{% url 'movies:detail' review.movie_id %}">{{ review.movie_title }}</a></td>
+      <td><a href="{% url 'community:detail' review.pk %}">{{ review.title }}</a> [{{ review.comment_set.all|length }}]</td>
+      <td><a href="{% url 'movies:detail' review.movie.movie_id %}">{{ review.movie.title }}</a></td>
       <td><a href="{% url 'accounts:profile' review.user.username %}">{{ review.user }}</a></td>
+      <td><p>{{ review.created_at|date:'Y. m. d' }}</p></td>
+      <td><p id="like-count-{{ review.pk }}">{{ review.like_users.all|length }}</p></td></td>
       <td>
         <form class="d-inline like-form" data-review-id="{{ review.pk }}">
           {% csrf_token %}
@@ -35,7 +38,6 @@
           {% endif %}
         </form>
       </td>
-      <td><p id="like-count-{{ review.pk }}">{{ review.like_users.all|length }}</p></td></td>
     </tr>
     {% endfor %}
   </tbody>
